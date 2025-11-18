@@ -7,21 +7,49 @@ import {
 } from 'react-icons/fa';
 
 export default function Contact() {
+  const staggerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 25 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
   return (
     <section id="contact" className="py-20 max-w-5xl mx-auto">
-      <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">
-        Get In <span className="text-quickBlue">Touch</span>
-      </h2>
-
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
+      {/* HEADING */}
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="grid md:grid-cols-2 gap-10 "
+        transition={{ duration: 0.7 }}
+        className="text-3xl md:text-4xl font-bold text-center mb-10"
       >
-        {/* LEFT CONTACT INFO */}
-        <div className="p-8 rounded-2xl bg-white/70 dark:bg-[#071225]/40 backdrop-blur-xl shadow-xl border border-white/20 dark:border-gray-700 hover:shadow-2xl transition">
+        Get In <span className="text-quickBlue">Touch</span>
+      </motion.h2>
+
+      <motion.div
+        variants={staggerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: '-50px' }}
+        className="grid md:grid-cols-2 gap-10"
+      >
+        {/* LEFT CONTACT CARD */}
+        <motion.div
+          variants={item}
+          className="p-8 rounded-2xl bg-white/70 dark:bg-[#071225]/40 backdrop-blur-xl 
+          shadow-xl border border-white/20 dark:border-gray-700 hover:shadow-2xl transition"
+        >
           <h3 className="text-xl font-semibold mb-6">Contact Information</h3>
 
           <div className="flex items-center gap-4 mb-5">
@@ -53,16 +81,19 @@ export default function Contact() {
             <FaLocationArrow className="text-orange-500 text-xl" />
             <p>Ahmedabad, Gujarat</p>
           </div>
-        </div>
+        </motion.div>
 
         {/* RIGHT FORM */}
-        <form
+        <motion.form
+          variants={item}
           action="#"
           method="POST"
-          className="p-8 rounded-2xl bg-white/70 dark:bg-[#071225]/40 backdrop-blur-xl shadow-xl border border-white/20 dark:border-gray-700 hover:shadow-2xl transition"
+          className="p-8 rounded-2xl bg-white/70 dark:bg-[#071225]/40 backdrop-blur-xl 
+          shadow-xl border border-white/20 dark:border-gray-700 hover:shadow-2xl transition"
         >
-          <div className="grid gap-6">
-            <div>
+          <motion.div variants={staggerVariants} className="grid gap-6">
+            {/* INPUT: NAME */}
+            <motion.div variants={item}>
               <label className="text-sm font-medium">Name</label>
               <input
                 type="text"
@@ -71,20 +102,22 @@ export default function Contact() {
                 className="w-full p-3 mt-2 border rounded-lg bg-transparent"
                 placeholder="Your full name"
               />
-            </div>
+            </motion.div>
 
-            <div>
+            {/* INPUT: EMAIL */}
+            <motion.div variants={item}>
               <label className="text-sm font-medium">Email</label>
               <input
                 type="email"
                 name="email"
                 required
                 className="w-full p-3 mt-2 border rounded-lg bg-transparent"
-                placeholder="Your email"
+                placeholder="you@example.com"
               />
-            </div>
+            </motion.div>
 
-            <div>
+            {/* INPUT: MESSAGE */}
+            <motion.div variants={item}>
               <label className="text-sm font-medium">Message</label>
               <textarea
                 name="message"
@@ -93,16 +126,21 @@ export default function Contact() {
                 className="w-full p-3 mt-2 border rounded-lg bg-transparent"
                 placeholder="Write your message..."
               ></textarea>
-            </div>
+            </motion.div>
 
-            <button
+            {/* BUTTON */}
+            <motion.button
+              variants={item}
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
               type="submit"
-              className="px-6 py-3 bg-quickBlue text-white rounded-xl shadow-lg hover:shadow-xl transition text-center"
+              className="px-6 py-3 bg-quickBlue text-white rounded-xl shadow-lg 
+              hover:shadow-2xl transition text-center"
             >
               Send Message
-            </button>
-          </div>
-        </form>
+            </motion.button>
+          </motion.div>
+        </motion.form>
       </motion.div>
     </section>
   );
