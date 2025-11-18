@@ -1,11 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>portfolio</title>
+
+    <!-- THEME BOOTSTRAP: must run BEFORE CSS -->
+    <script>
+      (function () {
+        try {
+          const ls = localStorage.getItem('theme'); // "dark" | "light" | null
+          const html = document.documentElement;
+          if (ls === 'dark' && !html.classList.contains('dark')) {
+            html.classList.add('dark');
+          } else if (ls === 'light' && html.classList.contains('dark')) {
+            html.classList.remove('dark');
+          } else if (!ls) {
+            // use OS pref only if no saved value
+            var prefersDark = false;
+            try {
+              prefersDark =
+                window.matchMedia &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches;
+            } catch (e) {}
+            if (prefersDark && !html.classList.contains('dark'))
+              html.classList.add('dark');
+          }
+
+          // ensure localStorage matches actual class
+          if (html.classList.contains('dark'))
+            localStorage.setItem('theme', 'dark');
+          else localStorage.setItem('theme', 'light');
+        } catch (e) {
+          console.warn('theme init error', e);
+        }
+      })();
+    </script>
+
+    <!-- LOAD TAILWIND CSS FROM HEAD (guarantees CSS sees html.dark immediately) -->
+    <link rel="stylesheet" href="/src/index.css" />
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
