@@ -15,12 +15,12 @@ export default function Navbar() {
 
   return (
     <>
-      {/* TOP NAV */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/60 dark:bg-[#021227]/60 border-b border-gray-200 dark:border-[#0b2540] shadow-sm">
+      {/* TOP NAVBAR */}
+      <header className="sticky top-0 z-[2000] backdrop-blur-xl bg-white/60 dark:bg-[#021227]/60 border-b border-gray-200 dark:border-[#0b2540] shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          {/* FIXED LOGO (NO CHANGE) */}
+          {/* LOGO */}
           <a
-            href="http://localhost:5173/"
+            href="/"
             className="font-extrabold text-quickBlue text-2xl tracking-wide"
           >
             QuickOpsPortfolio
@@ -33,11 +33,10 @@ export default function Navbar() {
                 key={item.label}
                 href={item.link}
                 className="
-                  text-white-800 hover:text-quickBlue 
+                  text-gray-800 dark:text-gray-200
+                  hover:text-quickBlue 
                   transition-all duration-200 
-                  hover:text-quickBlue
                   hover:-translate-y-1
-                  transform
                 "
               >
                 {item.label}
@@ -56,16 +55,23 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* MOBILE SIDEBAR */}
+      {/* ===== MOBILE OVERLAY ===== */}
       <div
-        className={`fixed inset-0 bg-black/40 backdrop-blur-sm md:hidden transition-all duration-300 ${
-          open ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
+        onClick={() => setOpen(false)}
+        className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-[5000] md:hidden transition-opacity duration-300 
+          ${open ? 'opacity-100 visible' : 'opacity-0 invisible'}
+        `}
       >
+        {/* ===== MOBILE SIDEBAR ===== */}
         <div
-          className={`absolute left-0 top-0 h-full w-72 bg-white dark:bg-[#071225] shadow-2xl p-6 transition-all duration-300 ${
-            open ? 'translate-x-0' : '-translate-x-80'
-          }`}
+          onClick={(e) => e.stopPropagation()}
+          className={`
+            absolute left-0 top-0 h-full w-72 
+            bg-white dark:bg-[#071225] 
+            shadow-2xl p-6 transition-transform duration-300 
+            z-[6000]
+            ${open ? 'translate-x-0' : '-translate-x-80'}
+          `}
         >
           {/* Sidebar Header */}
           <div className="flex justify-between items-center mb-8">
@@ -90,7 +96,6 @@ export default function Navbar() {
                     transition-all duration-200 
                     hover:text-quickBlue
                     hover:-translate-y-1
-                    transform
                   "
                 >
                   {item.label}
