@@ -7,7 +7,7 @@
   --bg: #ffffff;
   --card: #ffffff;
 }
-.dark {
+html.dark {
   --bg: #0b1220;
   --card: #071023;
 }
@@ -17,12 +17,10 @@ body,
 #root {
   height: 100%;
 }
+
+/* Light mode background */
 body {
   background-color: var(--bg);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-body {
   background: radial-gradient(
       circle at top left,
       rgba(11, 105, 255, 0.08),
@@ -31,6 +29,21 @@ body {
     radial-gradient(
       circle at bottom right,
       rgba(11, 105, 255, 0.06),
+      transparent 70%
+    );
+}
+
+/* Dark mode background (must use html.dark) */
+html.dark body {
+  background-color: var(--bg);
+  background: radial-gradient(
+      circle at top left,
+      rgba(255, 255, 255, 0.06),
+      transparent 70%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(255, 255, 255, 0.04),
       transparent 70%
     );
 }
