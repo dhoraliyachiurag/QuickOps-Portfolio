@@ -79,7 +79,9 @@ export default function Contact() {
 
           <div className="flex items-center gap-4">
             <FaLocationArrow className="text-orange-500 text-xl" />
-            <p>Ahmedabad, Gujarat</p>
+            <a href="#" className="hover:text-orange-500">
+              Ahmedabad, Gujarat
+            </a>
           </div>
         </motion.div>
 
