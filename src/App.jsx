@@ -28,12 +28,10 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#071023] text-gray-900 dark:text-gray-100 transition-colors">
+      <BackgroundShapes />
       <Navbar />
       <Hero />
       <main className="max-w-6xl mx-auto px-6 py-12">
-        <div className="relative overflow-hidden">
-          <BackgroundShapes />
-        </div>
         <About />
         <Services />
         <Skills />
