@@ -47,3 +47,14 @@ html.dark body {
       transparent 70%
     );
 }
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  60% {
+    transform: translateX(150%);
+  }
+  100% {
+    transform: translateX(150%);
+  }
+}
