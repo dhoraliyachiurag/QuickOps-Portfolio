@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   FaEnvelope,
   FaLocationArrow,
@@ -8,9 +8,21 @@ import {
 } from 'react-icons/fa';
 
 export default function Contact() {
-  const [status, setStatus] = useState({ loading: false, ok: null, msg: '' });
+  const [status, setStatus] = useState({
+    loading: false,
+    ok: null,
+    msg: '',
+  });
+  const [showPopup, setShowPopup] = useState(false);
 
-  // SAFE fallback logic (no errors)
+  // Auto hide popup after 3 seconds
+  useEffect(() => {
+    if (showPopup) {
+      const timer = setTimeout(() => setShowPopup(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showPopup]);
+
   const FORMSPREE =
     (typeof import.meta !== 'undefined' &&
       import.meta.env &&
@@ -18,7 +30,7 @@ export default function Contact() {
     (typeof process !== 'undefined' &&
       process.env &&
       process.env.REACT_APP_FORMSPREE_ENDPOINT) ||
-    'https://formspree.io/f/xkgykkok'; // <-- REPLACE WITH YOUR REAL FORMSPREE URL
+    'https://formspree.io/f/xkgykkok';
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -42,12 +54,14 @@ export default function Contact() {
           msg: 'Message sent successfully!',
         });
         form.reset();
+        setShowPopup(true);
       } else {
         setStatus({
           loading: false,
           ok: false,
           msg: json?.error || 'Something went wrong',
         });
+        setShowPopup(true);
       }
     } catch (err) {
       setStatus({
@@ -55,11 +69,34 @@ export default function Contact() {
         ok: false,
         msg: 'Network error. Try again later.',
       });
+      setShowPopup(true);
     }
   }
 
   return (
     <section id="contact" className="py-20 max-w-5xl mx-auto px-4">
+      {/* Animated Popup */}
+      {showPopup && (
+        <motion.div
+          initial={{ opacity: 0, y: -25 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          className={`
+            fixed top-6 left-1/2 -translate-x-1/2 z-[9999]
+            px-6 py-3 rounded-xl shadow-xl
+            backdrop-blur-xl border
+            text-white font-semibold
+            ${
+              status.ok
+                ? 'bg-green-600/90 border-green-400 shadow-green-500/30'
+                : 'bg-red-600/90 border-red-400 shadow-red-500/30'
+            }
+          `}
+        >
+          {status.msg}
+        </motion.div>
+      )}
+
       {/* HEADING */}
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
@@ -147,18 +184,10 @@ export default function Contact() {
               disabled={status.loading}
               type="submit"
               className="px-6 py-3 bg-quickBlue text-white rounded-xl shadow-lg 
-              hover:shadow-2xl transition"
+              hover:shadow-2xl hover:bg-blue-700 transition disabled:opacity-50"
             >
               {status.loading ? 'Sending...' : 'Send Message'}
             </button>
-
-            {/* MESSAGE FEEDBACK */}
-            {status.ok === true && (
-              <p className="text-green-600 font-medium mt-2">{status.msg}</p>
-            )}
-            {status.ok === false && (
-              <p className="text-red-600 font-medium mt-2">{status.msg}</p>
-            )}
           </div>
         </form>
       </div>
