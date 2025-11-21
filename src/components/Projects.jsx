@@ -101,7 +101,7 @@ export default function Projects() {
               <img
                 src={p.image}
                 alt={p.title}
-                className="w-full h-full object-cover transform transition-transform duration-500"
+                className="w-full h-full object-cover transform transition-transform duration-500 hover:scale-110"
               />
             </div>
 
@@ -161,7 +161,7 @@ export default function Projects() {
                   className="
       text-sm transition-all duration-300 
       opacity-80 group-hover:opacity-100 
-      group-hover:translate-x-1
+      hover:translate-x-1
     "
                 />
               </a>
