@@ -5,8 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        quickBlue: '#0b69ff',
-        quickAccent: '#06b6d4',
+        quickBlue: '#0B74FF',
       },
       boxShadow: {
         card: '0 6px 18px rgba(11,105,255,0.08)',
