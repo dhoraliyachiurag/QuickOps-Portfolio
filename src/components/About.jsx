@@ -5,8 +5,9 @@ export default function About() {
     { number: '4+ Years', label: 'Experience' },
     { number: '80+', label: 'Happy Clients' },
     { number: '100+', label: 'Projects Completed' },
-    { number: '10-15', label: 'Team Member' },
+    { number: '10-15', label: 'Team Members' },
   ];
+
   return (
     <section id="about" className="py-24 px-6">
       <motion.div
@@ -16,60 +17,58 @@ export default function About() {
         transition={{ duration: 0.7 }}
         className="max-w-4xl mx-auto text-center"
       >
-        {/* HEADING */}
         <h2 className="text-3xl md:text-4xl font-extrabold mb-6">
-          About <span className="text-quickBlue">Me</span>
+          About <span className="text-quickBlue">Us</span>
         </h2>
 
-        {/* DESCRIPTION */}
         <p className="text-lg leading-8 text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
-          At QuickOps, we pride ourselves on our ability to deliver exceptional
-          outcomes for our clients.
+          At <b>QuickOps India</b>, we build high-performance digital products —
+          websites, e-commerce platforms, cloud solutions, and automation
+          systems that help businesses scale faster.
           <br />
           <br />
-          With a diverse portfolio that showcases successful projects in custom{' '}
+          Our expertise spans{' '}
           <b>
-            Software Develoment, Web Design, Cloud Computing & Cybersecurity
+            Software Development, UI/UX Design, Cloud Engineering & Security
           </b>
-          , our team has consistently empowered businesses to elevate their
-          operationa and maintain a competitive edge in the fast-paced digital
-          landscape.
+          . We focus on performance, clean UI, and real business ROI.
         </p>
       </motion.div>
-      <section className="py-24">
-        <div className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-10 px-6 ">
-          {stats.map((s, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
-              className="
-              text-center p-6 rounded-xl border 
-              bg-transparent
-              shadow-[0_4px_15px_rgba(0,0,0,0.08)]
-              dark:shadow-[0_0_18px_rgba(255,255,255,0.12)]
-              hover:-translate-y-2 
-              hover:shadow-2xl transition-all duration-300 
-            "
-            >
-              <motion.p
-                initial={{ scale: 0.8 }}
-                whileInView={{ scale: 1 }}
-                transition={{ duration: 0.5, delay: i * 0.2 }}
-                className="text-4xl font-extrabold text-quickBlue mb-2 "
-              >
-                {s.number}
-              </motion.p>
 
-              <p className="text-gray-700 dark:text-gray-300 text-lg font-medium">
-                {s.label}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      {/* STATS */}
+      <div className="py-14 max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-10 px-6">
+        {stats.map((s, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: i * 0.12 }}
+            className="
+              text-center p-8 rounded-2xl 
+              bg-white/70 dark:bg-[#071225]/40 
+              backdrop-blur-xl
+              border border-gray-200 dark:border-[#0e1a2c]
+              shadow-sm dark:shadow-[0_0_22px_rgba(255,255,255,0.05)]
+              hover:shadow-md hover:-translate-y-1
+              transition-all duration-300 cursor-pointer
+            "
+          >
+            <motion.p
+              initial={{ scale: 0.85 }}
+              whileInView={{ scale: 1 }}
+              transition={{ duration: 0.5, delay: i * 0.15 }}
+              className="text-3xl md:text-4xl font-extrabold text-quickBlue mb-2"
+            >
+              {s.number}
+            </motion.p>
+
+            <p className="text-gray-700 dark:text-gray-300 text-lg font-medium">
+              {s.label}
+            </p>
+          </motion.div>
+        ))}
+      </div>
     </section>
   );
 }
