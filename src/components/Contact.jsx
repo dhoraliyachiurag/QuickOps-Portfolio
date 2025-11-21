@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import {
   FaEnvelope,
   FaLocationArrow,
@@ -7,25 +8,58 @@ import {
 } from 'react-icons/fa';
 
 export default function Contact() {
-  const staggerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.15,
-      },
-    },
-  };
+  const [status, setStatus] = useState({ loading: false, ok: null, msg: '' });
 
-  const item = {
-    hidden: { opacity: 0, y: 25 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
+  // SAFE fallback logic (no errors)
+  const FORMSPREE =
+    (typeof import.meta !== 'undefined' &&
+      import.meta.env &&
+      import.meta.env.VITE_FORMSPREE_ENDPOINT) ||
+    (typeof process !== 'undefined' &&
+      process.env &&
+      process.env.REACT_APP_FORMSPREE_ENDPOINT) ||
+    'https://formspree.io/f/xkgykkok'; // <-- REPLACE WITH YOUR REAL FORMSPREE URL
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setStatus({ loading: true, ok: null, msg: '' });
+
+    const form = e.target;
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch(FORMSPREE, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: data,
+      });
+
+      const json = await res.json();
+      if (res.ok) {
+        setStatus({
+          loading: false,
+          ok: true,
+          msg: 'Message sent successfully!',
+        });
+        form.reset();
+      } else {
+        setStatus({
+          loading: false,
+          ok: false,
+          msg: json?.error || 'Something went wrong',
+        });
+      }
+    } catch (err) {
+      setStatus({
+        loading: false,
+        ok: false,
+        msg: 'Network error. Try again later.',
+      });
+    }
+  }
 
   return (
-    <section id="contact" className="py-20 max-w-5xl mx-auto">
+    <section id="contact" className="py-20 max-w-5xl mx-auto px-4">
       {/* HEADING */}
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
@@ -37,65 +71,46 @@ export default function Contact() {
         Get In <span className="text-quickBlue">Touch</span>
       </motion.h2>
 
-      <motion.div
-        variants={staggerVariants}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: '-50px' }}
-        className="grid md:grid-cols-2 gap-10"
-      >
-        {/* LEFT CONTACT CARD */}
-        <motion.div
-          variants={item}
-          className="p-8 rounded-2xl bg-white/70 dark:bg-[#071225]/40 backdrop-blur-xl 
-          shadow-xl border border-white/20 dark:border-gray-700 hover:shadow-2xl transition"
+      {/* GRID */}
+      <div className="grid md:grid-cols-2 gap-10">
+        {/* LEFT INFO CARD */}
+        <div
+          className="p-8 rounded-2xl bg-white/80 dark:bg-[#071225]/50 backdrop-blur-xl 
+          shadow-xl border border-white/10 hover:shadow-2xl transition"
         >
           <h3 className="text-xl font-semibold mb-6">Contact Information</h3>
 
-          <div className="flex items-center gap-4 mb-5">
+          <div className="flex items-center gap-4 mb-4">
             <FaEnvelope className="text-quickBlue text-xl" />
-            <a href="mailto:you@example.com" className="hover:text-quickBlue">
-              you@example.com
-            </a>
+            <a href="mailto:your@email.com">your@email.com</a>
           </div>
 
-          <div className="flex items-center gap-4 mb-5">
+          <div className="flex items-center gap-4 mb-4">
             <FaPhone className="text-quickBlue text-xl" />
-            <a href="tel:+910000000000" className="hover:text-quickBlue">
-              +91 00000 00000
-            </a>
+            <a href="tel:+910000000000">+91 00000 00000</a>
           </div>
 
-          <div className="flex items-center gap-4 mb-5">
+          <div className="flex items-center gap-4 mb-4">
             <FaWhatsapp className="text-green-500 text-xl" />
-            <a
-              href="https://wa.me/910000000000"
-              className="hover:text-green-500"
-              target="_blank"
-            >
+            <a href="https://wa.me/910000000000" target="_blank">
               WhatsApp Chat
             </a>
           </div>
 
           <div className="flex items-center gap-4">
             <FaLocationArrow className="text-orange-500 text-xl" />
-            <a href="#" className="hover:text-orange-500">
-              Ahmedabad, Gujarat
-            </a>
+            <span>Ahmedabad, Gujarat</span>
           </div>
-        </motion.div>
+        </div>
 
         {/* RIGHT FORM */}
-        <motion.form
-          variants={item}
-          action="#"
-          method="POST"
-          className="p-8 rounded-2xl bg-white/70 dark:bg-[#071225]/40 backdrop-blur-xl 
-          shadow-xl border border-white/20 dark:border-gray-700 hover:shadow-2xl transition"
+        <form
+          onSubmit={handleSubmit}
+          className="p-8 rounded-2xl bg-white/90 dark:bg-[#071225]/50 backdrop-blur-xl 
+          shadow-xl border border-white/10 hover:shadow-2xl transition"
         >
-          <motion.div variants={staggerVariants} className="grid gap-6">
-            {/* INPUT: NAME */}
-            <motion.div variants={item}>
+          <div className="grid gap-6">
+            <div>
               <label className="text-sm font-medium">Name</label>
               <input
                 type="text"
@@ -104,10 +119,9 @@ export default function Contact() {
                 className="w-full p-3 mt-2 border rounded-lg bg-transparent"
                 placeholder="Your full name"
               />
-            </motion.div>
+            </div>
 
-            {/* INPUT: EMAIL */}
-            <motion.div variants={item}>
+            <div>
               <label className="text-sm font-medium">Email</label>
               <input
                 type="email"
@@ -116,10 +130,9 @@ export default function Contact() {
                 className="w-full p-3 mt-2 border rounded-lg bg-transparent"
                 placeholder="you@example.com"
               />
-            </motion.div>
+            </div>
 
-            {/* INPUT: MESSAGE */}
-            <motion.div variants={item}>
+            <div>
               <label className="text-sm font-medium">Message</label>
               <textarea
                 name="message"
@@ -128,22 +141,27 @@ export default function Contact() {
                 className="w-full p-3 mt-2 border rounded-lg bg-transparent"
                 placeholder="Write your message..."
               ></textarea>
-            </motion.div>
+            </div>
 
-            {/* BUTTON */}
-            <motion.button
-              variants={item}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
+            <button
+              disabled={status.loading}
               type="submit"
               className="px-6 py-3 bg-quickBlue text-white rounded-xl shadow-lg 
-              hover:shadow-2xl transition text-center"
+              hover:shadow-2xl transition"
             >
-              Send Message
-            </motion.button>
-          </motion.div>
-        </motion.form>
-      </motion.div>
+              {status.loading ? 'Sending...' : 'Send Message'}
+            </button>
+
+            {/* MESSAGE FEEDBACK */}
+            {status.ok === true && (
+              <p className="text-green-600 font-medium mt-2">{status.msg}</p>
+            )}
+            {status.ok === false && (
+              <p className="text-red-600 font-medium mt-2">{status.msg}</p>
+            )}
+          </div>
+        </form>
+      </div>
     </section>
   );
 }
